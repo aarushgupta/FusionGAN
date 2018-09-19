@@ -48,9 +48,9 @@ The code can also be run interactively using the `train.ipynb` Jupyter Notebook 
 
 ## To-Do
 
-1. [ ] Polish and add code for preparing the dataset. 
-2. [ ] Tune the hyperparameters
-3. [ ] Train the model and save checkpoints.
+1. [ ] Complete training script.
+2. [ ] Tune the hyperparameters.
+3. [ ] Polish and add code for preparing the dataset.
 4. [ ] Add test script for the model.
 5. [ ] Add keypoint estimation for quantitative evaluation.
 6. [ ] Remove the unused images in the dataset.

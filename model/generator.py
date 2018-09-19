@@ -33,6 +33,7 @@ class ResidualBlock(nn.Module):
         out = self.relu(out)
         return out
 
+# Generator Definition
 
 class Generator(nn.Module):
     def __init__(self, block):
@@ -71,19 +72,7 @@ class Generator(nn.Module):
             nn.Conv2d(32, 16, 3, padding = 1),
             nn.BatchNorm2d(16),
             nn.ReLU(inplace=True))      
-        
-#         self.conv1_x = nn.Conv2d(3, 16, 3, padding = 1)
-#         self.conv2_x = nn.Conv2d(16, 32, 3)
-#         self.conv3_x = nn.Conv2d(32, 16, 3, padding=1)
-
-#         self.conv1_y = nn.Conv2d(3, 16, 3)
-#         self.conv2_y = nn.Conv2d(16, 32, 3)
-#         self.conv3_y = nn.Conv2d(32, 16, 3, padding = 1)
-
-#         self.relu = nn.ReLU()
-#         self.avgpool = nn.AvgPool2d(2)
-        
-    
+            
         # 2 Residual Blocks for Identity Image
         self.block1_x = block(16, 16)
 #         downsample_x = nn.Sequential(conv3x3(16, 1, 1), nn.BatchNorm2d(1))
@@ -95,22 +84,15 @@ class Generator(nn.Module):
 #         downsample_y = nn.Sequential(conv3x3(16, 1, 1), nn.BatchNorm2d(1))
 #         self.block2_y = block(16, 1, 1, downsample_y)
         self.block2_y = block(16, 16)
+
         # 2 Residual Blocks for Combined(concat) image
         downsample1_concat = nn.Sequential(conv3x3(32, 16, 1), nn.BatchNorm2d(16))
         self.block1_concat = block(32, 16, 1, downsample1_concat)
 
         self.block2_concat = block(16, 16)
         
-#         self.deconv1 = nn.ConvTranspose2d(16, 16, 3)
-#         self.deconv2 = nn.ConvTranspose2d(16, 3, 3)
-        
-    
-#          self.conv2_y = nn.Sequential(
-#             nn.Conv2d(16, 32, 3, padding = 1),
-#             nn.BatchNorm2d(32),
-#             nn.ReLU(inplace=True),
-#             nn.AvgPool2d(2))
-    
+        # Upsampling layers
+                
         self.upsample1 = nn.Sequential(
             nn.Upsample(scale_factor=2, mode='bilinear', align_corners = True),
             nn.ConvTranspose2d(16, 32, 3, padding=1),

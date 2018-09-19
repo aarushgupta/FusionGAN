@@ -10,10 +10,6 @@ class NLayerDiscriminator(nn.Module):
         kw = 3
         padw = 1
         sequence = []
-#         sequence = [
-#             nn.Conv2d(input_nc, ndf, kernel_size=kw, stride=2, padding=padw),
-#             nn.LeakyReLU(0.2, True)
-#         ]
         self.initial_conv = nn.Conv2d(input_nc, ndf, kernel_size=kw, stride=2, padding=padw)
         self.initial_relu = nn.LeakyReLU(0.2, True)
         
