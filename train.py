@@ -28,6 +28,7 @@ from utils.loss_functions import lossIdentity, lossShape
 
 
 dataset_dir = './Dataset/'
+checkpoint_path = "./model_checkpoints/"
 batch_size = 8
 epochs = 10
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -93,6 +94,12 @@ discriminator = discriminator.to(device)
 optimizer_gen = optim.SGD(generator.parameters(), lr = learning_rate, momentum=0.9)
 optimizer_disc = optim.SGD(discriminator.parameters(), lr = learning_rate, momentum=0.9)
 
+
+def save_checkpoint(state, dirpath, epoch):
+    filename = 'checkpoint-{}.ckpt'.format(epoch)
+    checkpoint_path = os.path.join(dirpath, filename)
+    torch.save(state, checkpoint_path)
+    print('--- checkpoint saved to ' + str(checkpoint_path) + ' ---')
 
 # In[12]:
 
@@ -167,14 +174,15 @@ def train_model(gen, disc, loss_i, loss_s, optimizer_gen, optimizer_disc, alpha 
                 loss_s1.backward()
                 optimizer_gen.step()
                 print('backward 5 done')
-                print()
+                # print()
             running_loss_iden += loss_identity_disc.item() * x_gen.size(0)
             running_loss_s1 += loss_s1.item() * x_gen.size(0)
             running_loss_s2a += loss_s2a.item() * x_gen.size(0) 
             running_loss_s2b += loss_s2b.item() * x_gen.size(0)
             running_loss = running_loss_iden +  beta * (running_loss_s1 + alpha * (running_loss_s2a + running_loss_s2b))
-            print(str(time.time() - since))
-            since = time.time()
+            # print(str(time.time() - since))
+            # since = time.time()
+            # break
         epoch_loss_iden = running_loss_iden / dataset_sizes[0]
         epoch_loss_s1 = running_loss_s1 / dataset_sizes[0]
         epoch_loss_s2a = running_loss_s2a / dataset_sizes[0]
@@ -183,7 +191,20 @@ def train_model(gen, disc, loss_i, loss_s, optimizer_gen, optimizer_disc, alpha 
         print('Identity Loss: {:.4f} Loss Shape1: {:.4f} Loss Shape2a: {:.4f}                Loss Shape2b: {:.4f}'.format(epoch_loss_iden, epoch_loss_s1,
                                            epoch_loss_s2a, epoch_loss_s2b))
         print('Epoch Loss: {:.4f}'.format(epoch_loss))
-        print('Time Taken: ' + str(time.time() - since))
+
+        
+        save_checkpoint({
+            'epoch': epoch + 1,
+            'gen_state_dict': gen.state_dict(),
+            'disc_state_dict': disc.state_dict(),
+            'gen_opt': optimizer_gen.state_dict(),
+            'disc_opt': optimizer_disc.state_dict()
+        }, checkpoint_path, epoch + 1)
+
+        print('Time taken by epoch: {: .0f}m {:0f}s'.format((time.time() - since) // 60, (time.time() - since) % 60))
+#         print('Time Taken: ' + str(time.time() - since))
+        print()
+        since = time.time()
     return gen, disc
 
 

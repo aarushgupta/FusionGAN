@@ -20,6 +20,8 @@ First, download the repository on your local machine by either downloading it or
 ``` Batchfile
 git clone https://github.com/aarushgupta/FusionGAN.git
 ```
+
+Next, go through the instructions mentioned in the `Dataset Preparation` section.
 ## Dataset Preparation
 
 As the data is not publically available in the desired form, the frames of the required YouTube videos have been saved at [**this**](https://drive.google.com/drive/folders/1waOPQYOmQF1k0pT50uqp6STzYDdSv_5N?usp=sharing) Google Drive link. 
@@ -42,11 +44,13 @@ The hyperparameters of the model have been preset. To start training of the mode
 ``` cmd
 python train.py
 ```
-The code can also be run interactively using the Jupyter Notebooks `train.ipynb` or `FusionGAN.ipynb` provided in the repository.
+The code can also be run interactively using the `train.ipynb` Jupyter Notebook provided in the repository.
 
 ## To-Do
 
-1. [ ] Train the model and save checkpoints.
-2. [ ] Add test script for the model.
-3. [ ]  Add keypoint estimation for quantitative evaluation.
-4. [ ] Remove the unused images in the dataset.
+1. [ ] Polish and add code for preparing the dataset. 
+2. [ ] Tune the hyperparameters
+3. [ ] Train the model and save checkpoints.
+4. [ ] Add test script for the model.
+5. [ ] Add keypoint estimation for quantitative evaluation.
+6. [ ] Remove the unused images in the dataset.
